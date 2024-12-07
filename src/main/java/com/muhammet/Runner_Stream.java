@@ -1,6 +1,10 @@
 package com.muhammet;
 
+import com.muhammet.entity.Personel;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Runner_Stream {
@@ -116,6 +120,63 @@ public class Runner_Stream {
         Stream<Integer> sayiList = Stream.of(2,4,8,50,23,47,99);
         int carpim = sayiList.reduce(1, (ahmetAmca, cananTeyze)-> ahmetAmca * cananTeyze);
         System.out.println("tüm sayıların çarpımı....: "+carpim);
+
+        /**
+         * Optional nedir?
+         * bir nesne değişkeni mutlakata bir adresi göstermek zorunda değildir. bazen içinde değer
+         * olmayabilir. Bu nedenle var olmayan nesnelerin parametreleri hata fırlatacaktır.(NullPointerException)
+         * kodlamaya bu tarz sorunlar tespit etmek için "null check" yapmak gereklidir, olursa unutulursa
+         * uygulama çökebilir yada kullanılamayabilir.
+         *
+         */
+        String ifade = "Muhammet HOCA";
+        Optional<String> ifadeOptional = Optional.of(ifade); // ifade değişkenini kutuya koy.
+        if (ifadeOptional.isPresent()) // kutunun içinde eğer bir değer var ise
+            System.out.println(ifadeOptional.get().toUpperCase());
+
+        /**
+         * Stream ile filtreleme yapmak
+         */
+        List<String> isimler = List.of("Mehmet","Enes","Ali","Ayşe","Bahri","Zeynep");
+        Stream<String> isimListesi = Stream.of("Mehmet","Enes","Ali","Ayşe","Bahri","Zeynep");
+        System.out.println("""
+                ******   Arama    ******
+                """);
+        System.out.println("Adında a harfi olanlar");
+        //isimler.stream().filter(x-> x.contains("a")).forEach(System.out::println);
+        isimListesi.filter(x-> x.contains("a")).forEach(System.out::println);
+        System.out.println("-----------------");
+        isimListesi = Stream.of("Mehmet","Enes","Ali","Ayşe","Bahri","Zeynep");
+        System.out.println("adı A ile başlayanlar");
+        isimListesi.filter(x-> x.startsWith("A")).forEach(System.out::println);
+        System.out.println("-----------------");
+        isimListesi = Stream.of("Mehmet","Enes","Ali","Ayşe","Bahri","Zeynep");
+        System.out.println("adının uzunluğu 4 ve daha kısa olanlar");
+        isimListesi.filter(x-> x.length()<=4).forEach(System.out::println);
+        isimListesi = Stream.of("Mehmet","Enes","Ali","Ayşe","Bahri","Zeynep");
+        System.out.println("Adında i ve a harfi olanlar");
+        isimListesi.filter(x-> x.contains("i") && x.contains("a") ).forEach(System.out::println);
+
+        /**
+         * Entity ile çalışmak ve stream kullanımı
+         *
+         */
+        List<Personel> personelListesi = new ArrayList<>();
+        personelListesi.add(new Personel("Murat","TAŞ",590));
+        personelListesi.add(new Personel("Deniz","KAŞIK",9000));
+        personelListesi.add(new Personel("Ayhan","BEDİR",543));
+        personelListesi.add(new Personel("Kenan","EZGİ",980));
+        personelListesi.add(new Personel("Eylem","ATEŞ",2380));
+        personelListesi.add(new Personel("Yüksel","VARDIR",3442));
+        System.out.println("""
+                **    Personel Listesi    **
+                """);
+        personelListesi.stream()
+                .filter(x-> x.getAd().contains("e") && x.getAd().contains("l"))
+                .forEach(System.out::println);
+
+        Integer toplamAvans = personelListesi.stream().mapToInt(Personel::getBorc).sum();
+
 
 
     }
