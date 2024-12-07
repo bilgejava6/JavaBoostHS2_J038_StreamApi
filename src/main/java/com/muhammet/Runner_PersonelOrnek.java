@@ -4,12 +4,49 @@ import com.muhammet.entity.Bolum;
 import com.muhammet.entity.Personel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Runner_PersonelOrnek {
     private static List<Personel> personelList = new ArrayList<>();
     public static void main(String[] args) {
         init();
+        /**
+         * Bilgi İşlem bürsonuda kimler çalışıyor?
+         */
+//        for (Personel personel : personelList) {
+//            if(personel.getBolum().getAd().equals("Bilgi İşlem"))
+//                System.out.println(personel);
+//        }
+        personelList.stream().filter(personel-> personel.getBolum().getAd().equals("Bilgi İşlem"))
+                .forEach(System.out::println);
+
+        /**
+         * Adı A ile başlayan personellerin listesini yazdırın.
+         */
+        System.out.println("""
+                
+                *** Adı A ile başlayan personeller
+                """);
+//        for(Personel personel : personelList) {
+//            if(personel.getAd().startsWith("A"))
+//                System.out.println(personel);
+//        }
+
+        personelList.stream().filter(personel -> personel.getAd().startsWith("A")).forEach(System.out::println);
+
+        /**
+         * List to Map with collect
+         */
+        HashMap<String,List<Personel>> bolumList = personelList.stream()
+                                    .collect(Collectors.groupingBy(
+                                       personel -> personel.getBolum().getAd(),
+                                       HashMap::new,
+                                       Collectors.toList()
+                                    ));
+        System.out.println(bolumList.get("Bilgi İşlem"));
+
     }
 
     private static void init(){
