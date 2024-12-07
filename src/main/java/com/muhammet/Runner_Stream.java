@@ -44,8 +44,79 @@ public class Runner_Stream {
          * Exception in thread "main" java.lang.IllegalStateException: stream has already been operated upon or closed
          *
          */
-        gunlerStream.forEach(gelendata -> System.out.println(gelendata));
+        // gunlerStream.forEach(gelendata -> System.out.println(gelendata));
 
-        
+        gunlerStream.forEach(gelenData ->{
+            System.out.println("Önce yapılacak işlemler");
+            System.out.println(gelenData);
+            System.out.println("---------------------");
+        });
+
+        /**
+         *
+         * Sonsuz Stream ler
+         * Math.random() -> size 0 ile 1 arasında double bir sayı üretir.
+         */
+        Stream<Double> sonsuzStream_1 = Stream.generate(Math::random); // bu ben her okumak istediğim bir sayı dönecek.
+        // şuan : {} -> empty
+        /**
+         * seed-> başlanma noktası
+         * x-> kural
+         * 100, n-> n+5
+         * akış -> 100, 105, 110, 115 ...... sonsuz
+         */
+        Stream<Integer> sonsuzStream_2 = Stream.iterate(100, n -> n + 5);
+        /**
+         * seed -> başlama noktası
+         * condition -> bitiş sonlanma kuralı
+         * kural -> yeni değer üretme kuralı
+         * akış -> 500, 530, 560 ..... 680 (n<700)
+         */
+        Stream<Integer> sonsuzStream_3 = Stream.iterate(500, ahmetAmcaDegeri-> ahmetAmcaDegeri<700, neeeee-> neeeee + 30 );
+
+        sonsuzStream_3.forEach(number->{
+            // okumak istediğiniz anda, generate rastgele sayı üreten sınıfı tetikler ve bir sayı alır
+            System.out.println(number);
+            try{
+                Thread.sleep(100L);
+            }catch (Exception ex){}
+
+        });
+
+
+        var kelimeBilgisi = new char[]{'M','u','h','a','m','m','e','t'};
+        String ad = "";
+        for(char c: kelimeBilgisi) {
+           ad = ad.concat(c + "");
+        }
+        System.out.println("ad.....: "+ ad);
+
+        Stream<String> adStream = Stream.of("M","u","r","a","t");
+        /**
+         * identity -> "" başlangıç verimiz.
+         * kural(BinaryOperator) -> (s1: mevcut değer, s2: sıradaki değer) -> kural İşlem tanımla s1+s2;
+         * Stream değeri : "M","u","r","a","t"
+         * 1. adım:   s1 + s2
+         * identity : "" + "M"
+         * 2. adım
+         * identity: "M" + "u"
+         * 3. adım
+         * identity: "Mu" + "r"
+         */
+        ad = adStream.reduce("",(s1,s2)-> s1 + s2);
+        System.out.println("stream ad ....: "+ ad);
+        /**
+         * 2,4,8,50,23,47,99
+         * i: 1 * 2
+         * i: 2 * 4
+         * i: 8 * 8
+         * i: 64 * 50
+         * i: 3200 * 23
+         */
+        Stream<Integer> sayiList = Stream.of(2,4,8,50,23,47,99);
+        int carpim = sayiList.reduce(1, (ahmetAmca, cananTeyze)-> ahmetAmca * cananTeyze);
+        System.out.println("tüm sayıların çarpımı....: "+carpim);
+
+
     }
 }
